@@ -1,0 +1,4 @@
+https://www.slideshare.net/AdrianMartinezVargas1/oneday-training-introduction-to-geological-databases-and-microsoft-access
+https://www.guru99.com/database-normalization.html
+https://learn.microsoft.com/ru-ru/office/troubleshoot/access/database-normalization-description
+https://www.w3schools.com/sql/
