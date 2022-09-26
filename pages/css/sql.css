@@ -1,0 +1,120 @@
+.content {
+    width: 80%;
+    margin: auto;
+    /*font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;*/
+    text-align: justify;
+    font-weight: initial;
+    line-height: 2;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+@media screen and (max-width: 1200px) {
+    .column {
+        float: left;
+        width: 90%;
+    }
+}
+
+.paragraph {
+    text-align: justify;
+    font-size: 20px;
+}
+
+.content-page {
+    display: none;
+    position: absolute;
+    top: 10%;
+    left: 9%;
+    width: calc(82%);
+    height: calc(80%);
+    border: 2px;
+    border-color: black;
+    background-color: white;
+    z-index: 10000;
+    text-align: justify;
+}
+
+.page {
+    display: none;
+}
+
+.img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+}
+
+.close-btn {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 5px;
+}
+
+.close-btn a {
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    float: right;
+}
+
+.blog-item {
+    margin-top: 10px;
+}
+
+.blog-shortly {
+    font-size: 18px;
+}
+
+.blog-header {
+    font-weight: bold;
+    font-size: 30px !important;
+    text-decoration: solid;
+    font-family: 'Schoolbell', arial, serif; 
+}
+
+a:visited, a:active, a:link, a:hover {
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+}
+
+.latex {
+    margin: auto; 
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.blog-title {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-size: 40px;
+    font-weight: bold;
+    font-family: 'Schoolbell', arial, serif; 
+}
+
+.blog-menu {
+    font-family: 'Schoolbell', arial, serif; 
+}
+
+.home {
+    font-family: 'Schoolbell', arial, serif; 
+}
+
+pre code {
+    background-color: #eee;
+    border: 1px solid #999;
+    display: block;
+    padding: 20px;
+}

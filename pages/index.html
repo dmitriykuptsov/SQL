@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Schoolbell&v1" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css" integrity="sha512-Ez0cGzNzHR1tYAv56860NLspgUGuQw16GiOOp/I2LuTmpSK9xDXlgJz3XN4cnpXWDmkNBKXR/VDMTCnAaEooxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="css/sql.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js" integrity="sha512-EKWWs1ZcA2ZY9lbLISPz8aGR2+L7JVYqBAYTq5AXgBkSjRSuQEGqWx8R1zAX16KdXPaCjOCaKE8MCpU0wcHlHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+        <title>Основы SQL</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="description" content="Basics of SQL">
+        <meta name="robots" content="index, follow" />
+        <meta name="keywords" content="SQL, queries" />
+        <script type="text/javascript">
+            function showPage(page) {
+                window.event.preventDefault();
+                var html = $("#" + page).html();
+                $("#content-page").html(html);
+                $("#content-page").show();
+                return false;
+            }
+
+            function hidePage() {
+                window.event.preventDefault();
+                $("#content-page").hide();
+                return false;
+            }
+
+            function hideSearch() {
+                window.event.preventDefault();
+                $("#search-results").hide();
+                return false;
+            }
+
+            function showSearch(id) {
+                window.event.preventDefault();
+                $("#search-results").hide();
+                var html = $("#" + id).html();
+                $("#content-page").html(html);
+                $("#content-page").show();
+                return false;
+            }
+
+            function onSearch() {
+                window.event.preventDefault();
+                var query = $("#query").val();
+                var results = [];
+                var ids = [];
+                var len = $(".page").length;
+                var count = 1;
+                $(".page").each(function(i, obj) {
+                    var text = $(obj).text();
+                    var id = $(obj).attr('id')
+                    if (text.includes(query)) {
+                        results.push(obj);
+                        ids.push(id);
+                    }
+                    if (count == len) {
+                        console.log(count);
+                        html = "";
+                        console.log(results)
+                        var j = 0;
+                        results.forEach(function(obj) {
+                            var text = $(obj).text();
+                            var i = text.indexOf(query)
+                            var id = ids[j];
+                            j += 1;
+                            console.log(id)
+                            html += "<div><div class=\"item\"><a href=\"#\" onclick=\"showSearch('" + id + "')\">Перейти</a></div>";
+                            html += text.substring(i - 40, i + 40) + "</div>"
+                        });
+                    }
+                    count += 1;
+                });
+
+                $("#search-results").html(html);
+                $("#search-results").show();
+            }
+        </script>
+    </head>
+    <body>
+        <div class="content">
+            <div class="blog-title">
+                Основы SQL
+            </div>
+            <div class="search">
+                <div class="input-group mb-3">
+                    <button class="btn btn-outline-secondary" type="button" id="button-search" onclick="onSearch()">Поиск</button>
+                    <input type="text" id="query" class="form-control" placeholder="" aria-label="Поиск по сайту" aria-describedby="button-search">
+                </div>
+            </div>
+            <div class="content-page" id="content-page">
+
+            </div>
+            <div class="content-page" id="search-results">
+                <div class="close-btn"><a href="close.html" onclick="hideSearch()">Закрыть</a></div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="item"><a href="about.html" onclick="showPage('about')">Что такое SQL и SQL база данных?</a></div>
+                    <div class="page" id="about">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Реляционные базы данных представляют собой набор таблиц, 
+                            которые могут быть связаны между собой по средствам первичных 
+                            и внешних ключей. Каждая таблица состоит из набора кортежей,
+                            или строк. В свою очередь строка состоит из столбцов. Каждый
+                            столбец имеет тип данных, определенный при проектирование базы данных.
+                        </div>
+                        <div class="paragraph">
+                            Язык SQL - это структурированный язык запросов к реляционной базе данных.
+                            Он позволяет производить выборку данных из одной или нескольких
+                            таблиц, применять фильтры, агрегировать данные, сортировать выходные данные,
+                            обновлять данные, удалять данные, а также создавать объекты в базе данных (
+                            например создавать новые таблицы, представления, хранимые процедуры, пользовательские
+                            функции, новые базы данных, создавать индексы). 
+                        </div>
+                        <div class="paragraph">
+                            Как уже было упомянуто, каждая колонка должна иметь определенный тип данных.
+                            Перечислим основные типы данных (полный список типов данных можно найти
+                            на официальном 
+                            <a href="https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver16">сайте Microsoft</a>):
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Тип данных</th>
+                                        <th>Описание</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>INT</td>
+                                        <td>Целочисленный тип данных. Например, 1, 2, 3, ...</td>
+                                    </tr>
+                                    <tr>
+                                        <td>REAL</td>
+                                        <td>Число с плавующей точкой</td>
+                                    </tr>
+                                    <tr>
+                                        <td>NVARCHAR</td>
+                                        <td>Строковый (unicode) тип данных с переменной длинной</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TEXT</td>
+                                        <td>Строковый (unicode) тип данных с переменной длинной до 2GB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>IMAGE</td>
+                                        <td>Бинырный файл размером до 2GB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>DATETIME</td>
+                                        <td>Дата и время (с 01.01.1753 по 31.12.9999)
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="paragraph">
+                            В качестве обучающего примера будем использовать простую базы данных (исходный код можно загрузить нажав эту <a href="distro/example_database.sql">ссылку</a>):
+                            <pre>
+                                <code>
+USE shop;
+
+CREATE TABLE Customer (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	FName NVARCHAR(100),
+	LName NVARCHAR(100),
+	Email NVARCHAR(100),
+	RegisteredAt DATETIME
+);
+
+CREATE TABLE Categories (
+	Id INT PRIMARY KEY IDENTITY(1, 1),
+	Name NVARCHAR(100) 
+);
+
+CREATE TABLE Products (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	ProductName NVARCHAR(100) NOT NULL,
+	ProductCategoryId INT NOT NULL,
+	Price REAL NOT NULL DEFAULT 0.0,
+	CONSTRAINT FK_ProductsCategories
+		FOREIGN KEY (ProductCategoryId) REFERENCES Categories(Id)
+);
+
+CREATE TABLE CustomerProducts (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	ProductId INT NOT NULL,
+	CustomerId INT NOT NULL,
+	CONSTRAINT FK_CustomersProducts_Products
+		FOREIGN KEY (ProductId) REFERENCES Products(Id),
+	CONSTRAINT FK_CustomersProducts_Customers
+		FOREIGN KEY (CustomerId) REFERENCES Customer(id)
+)
+
+INSERT INTO Customer(FName, LName, Email, RegisteredAt) VALUES(N'Иван', N'Иванов', 'ivan.ivanov@gmail.com', SYSDATETIME());
+INSERT INTO Customer(FName, LName, Email, RegisteredAt) VALUES(N'Петр', N'Петров', 'petr.petrov@gmail.com', SYSDATETIME());
+
+INSERT INTO Categories(Name) VALUES(N'Бытовая химия');
+INSERT INTO Categories(Name) VALUES(N'Продукты питания');
+INSERT INTO Categories(Name) VALUES(N'Бытовая техника');
+
+INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Мыло хозяйственное', 
+    (SELECT Id FROM Categories WHERE Name LIKE 'Бытовая химия'), 0.7);
+INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Яблоки', 
+    (SELECT Id FROM Categories WHERE Name LIKE 'Продукты питания'), 1.1);
+INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Сыр', 
+    (SELECT Id FROM Categories WHERE Name LIKE 'Продукты питания'), 7.2);
+INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Стиральная машина', 
+    (SELECT Id FROM Categories WHERE Name LIKE 'Бытовая техника'), 399.99);
+INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Посудомоечная машина', 
+    (SELECT Id FROM Categories WHERE Name LIKE 'Бытовая техника'), 599.99);
+INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Телевизор', 
+    (SELECT Id FROM Categories WHERE Name LIKE 'Бытовая техника'), 599.99);
+
+INSERT INTO CustomerProducts(ProductId, CustomerId) VALUES((SELECT Id FROM Products WHERE ProductName LIKE N'Мыло хозяйственное'), 
+	(SELECT Id FROM Customer WHERE LName LIKE N'Иванов' AND FNAME LIKE 'Иван'));
+INSERT INTO CustomerProducts(ProductId, CustomerId) VALUES((SELECT Id FROM Products WHERE ProductName LIKE N'Сыр'), 
+	(SELECT Id FROM Customer WHERE LName LIKE N'Иванов' AND FNAME LIKE 'Иван'));
+INSERT INTO CustomerProducts(ProductId, CustomerId) VALUES((SELECT Id FROM Products WHERE ProductName LIKE N'Телевизор'), 
+	(SELECT Id FROM Customer WHERE LName LIKE N'Иванов' AND FNAME LIKE 'Иван'));
+
+                                </code>
+                            </pre>
+                        </div>
+                        <div class="paragraph">
+                            Схематично данную базу данных можно представить как:
+                        </div>
+                        <div class="paragraph">
+                            <img alt="DB Example" class="img" src="img/db_diagram.png" />
+                        </div>
+                    </div>
+                    <div class="item"><a href="select.html" onclick="showPage('select')">Выборка: SELECT</a></div>
+                    <div class="page" id="select">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Операция SELECT используется для выборки данных из базы данных. Это одина из самых распростаненных
+                            операций, используемых в SQL. Например, используя наш пример базы данных, мы можем выбрать все строки 
+                            слудующим образом: 
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT * FROM Products;
+                                </code>
+                            </pre>
+                        </div>
+                        <div class="paragraph">
+                            Результатом выполнения будет следуюшая таблица:
+                        </div>
+                        <div class="paragraph">
+                            <img alt="SELECT result" class="img" src="img/select_result.png" />
+                        </div>
+                        <div class="paragraph">
+                            Если необходимо выбрать какие-то определенные колонки (например, наименование продукта), то вместо звездочки 
+                            необходимо перечислить через запятую все колонки нужной таблицы:
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT ProductName, Price FROM Products;
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <a href="where.html" onclick="showPage('where')">Запрос с условием: WHERE</a>
+                    </div>
+                    <div class="page" id="where">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Гибкость языка SQL заключаеться в том, что можно выбирать только нужные данные, а не все.
+                            Для этих целей существует колючевое слово WHERE. Например, если мы хотим выбрать все товары,
+                            цена для которых меньше заданной то можно выполнить следующий запрос к базе данных:
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT ProductName, Price FROM Products WHERE Price < 5.0;
+                                </code>
+                            </pre>
+                        </div>
+                        <div class="paragraph">
+                            При использование запроса с WHERE можно составлять более сложные логические высказывания, 
+                            используя логические операторы AND, OR, NOT. Также можно делать подзапросы из других таблиц.
+                            Все это мы рассмотрим позже, а пока продемонстрируем запрос, в котором нас интересуют 
+                            только товары в ценовом диапазоне от 1 до 5 условных единиц:
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT ProductName, Price FROM Products WHERE Price >= 1.0 AND Price <= 5.0;
+                                </code>
+                            </pre>
+                        </div>                        
+                    </div>
+                    <div class="item"><a href="group.html" onclick="showPage('group')">Группировка: GROUP BY</a></div>
+                    <div class="page" id="group">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Выбранные данные можно группировать. Это очень важно если, например, к сгруппированным данным 
+                            необходимо применить агрегирующую функцию. Например, в нашей базе данных мы можем найти сумму
+                            товаров в каждой категории следующим образом:
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT c.Name, ROUND(SUM(p.Price), 2) FROM Categories AS c INNER JOIN Products AS p ON c.Id = p.ProductCategoryId GROUP BY c.Name;
+                                </code>
+                            </pre>
+                        </div>
+                        <div class="paragraph">
+                            Для группировки используеться ключевое слово GROUP BY, где следом идет перечисление колонок,
+                            по котором нобходимо сгруппировать строки. Обычно используеться в паре с агрегирующей функцией.
+                        </div>
+                        <div class="paragraph">
+                            <img alt="GROUP BY result" class="img" src="img/group_by_result.png" />
+                        </div>
+                    </div>
+                    <div class="item"><a href="like" onclick="showPage('like')">LIKE</a></div>
+                    <div class="page" id="like">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Для фильтрации колонки, содержащей строковые данные можно использовать ключевое значение 
+                            LIKE. Например, для того, чтобы выбрать все продукты содержащие слово <i>машина</i> можно выполнить
+                            следующий запрос:
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT p.* FROM Products p WHERE ProductName LIKE '%машина%';
+                                </code>
+                            </pre>
+                        </div>
+                        <div class="paragraph">
+                            В данном запросе символ % представляет один или более символов. В таблице, приведенной ниже
+                            мы приводим список всех подстановочных символов:
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Подстановочный символ</th>
+                                        <th>Значение</th>
+                                        <th>Пример</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            %
+                                        </td>
+                                        <td>
+                                            Один или несколько символов
+                                        </td> 
+                                        <td>
+                                            bl% найдет bl, black, blue, и blob
+                                        </td>                                       
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            _
+                                        </td>
+                                        <td>
+                                            Один символ
+                                        </td>
+                                        <td>
+                                            h_t найдет hot, hat, и hit
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            []
+                                        </td>
+                                        <td>
+                                            Один символ в скобках
+                                        </td>
+                                        <td>
+                                            h[oa]t найдет hot и hat, но не найдет hit
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            ^
+                                        </td>
+                                        <td>
+                                            Любой символ не в скобках
+                                        </td>
+                                        <td>
+                                            h[^oa]t не найдет hot и hat, но найдет hit
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            -
+                                        </td>
+                                        <td>
+                                            Любой символ из области
+                                        </td>
+                                        <td>
+                                            c[a-b]t найдет cat и cbt
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="item"><a href="case.html" onclick="showPage('case')">CASE</a></div>
+                    <div class="page" id="case">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Выражение CASE во время отработки скипта SQL проходит по условиям и возвращает значение,
+                            соответствующее первому совпавшему условию (также как и выражение IF-THEN-ELSE).
+                        </div>
+                        <div class="paragraph">
+                            Как только условие сработает (будет получен результат True), выполнение выражения
+                            завершится и вернется результат. Если ни одно из условий не выполнится, то вернется
+                            значение заданное в операторе ELSE. Если же оператор ELSE опущен, то возвращается значение 
+                            NULL. Например:
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT ProductName, 
+CASE 
+	WHEN (Price <= 1) THEN 'Cheap'
+	WHEN (Price > 1 AND Price <= 10) THEN 'Moderate'
+	WHEN (Price > 10) THEN 'Expensive'
+END AS 'Price category'
+FROM Products
+                                </code>
+                            </pre>
+                        </div>
+                        <div class="paragraph">
+                            Результатом данного запроса будут следующие строки:
+                        </div>
+                        <div class="paragraph">
+                            <img alt="CASE statement" class="img" src="img/case.png"/>
+                        </div>
+                    </div>
+                    <div class="item"><a href="any.html">ANY, ALL</a></div>
+                    <div class="item"><a href="aliases.html">Альясы</a></div>
+                    <div class="item"><a href="update.html">Обновление данных UPDATE</a></div>
+                    <div class="item"><a href="views.html">Представления</a></div>
+                </div>
+                <div class="column">
+                    <div class="item"><a href="major_queries.html" onclick="showPage('major_queries')">Основные типы запросов</a></div>
+                    <div class="page" id="major_queries">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            В SQL существует пять основных запросов:
+                            <ul>
+                                <li>SELECT - выборка данных из таблици или представления</li>
+                                <li>UPDATE - используется для обновления данных в таблеце</li>
+                                <li>DELETE - используется для удаления записей или же объектов таких, как хранимая процедура или представление</li>
+                                <li>ALTER - используется для изменение структуры таблицы или объекта, например, хранимой процедуры</li>
+                                <li>CREATE - используется для создания таблиц, индексов, хранимых процедур, представлений, баз данных</li>
+                            </ul>
+                            Мы рассмотрим только SELECT, UPDATE и DELETE команды.
+                        </div>
+                    </div>
+                    <div class="item"><a href="top.html" onclick="showPage('top')"">Первые N или SELECT TOP</a></div>
+                    <div class="page" id="top">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Иногда нужно выбрать первые N строк из результата. Для этого существует ключевое слово TOP:
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT TOP 2 * FROM Products;
+                                </code>
+                            </pre>
+                        </div>
+                        <div class="paragraph">
+                            Для пагинации же иногда нужно выборать следующие N начиная с отступа M. Для этого существуют ключевые слова
+                            OFFSET и FETCH NEXT, который являются параметрами ORDER BY. Например, если мы хотим выбрать следующие 2 продукта 
+                            начиная со 2 по списку то, можно выполнить следующий запрос:
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT * FROM Products 
+ORDER BY Id ASC
+    OFFSET 1 ROWS 
+    FETCH NEXT 2 ROWS ONLY;
+                                </code>
+                            </pre>
+                        </div>
+                        <div class="paragraph">
+                            Результатом выборки будет следующий набор строк:
+                        </div>
+                        <div class="paragraph">
+                            <img alt="OFFSET and FETCH NEXT result" class="img" src="img/fetch_next.png" />
+                        </div>
+                    </div>
+                    <div class="item"><a href="and.html">Логические операторы AND, OR, NOT</a></div>
+                    <div class="item"><a href="aggregation.html">Агрегирующие функции COUNT, SUM, AVG</a></div>
+                    <div class="item"><a href="intersect.html">INTERSECT</a></div>
+                    <div class="item"><a href="join.html">Объединения или JOIN запросы</a></div>
+                    <div class="item"><a href="exists.html">EXISTS</a></div>
+                    <div class="item"><a href="select_into.html">SELECT INTO</a></div>
+                    <div class="item"><a href="delete.html">Удаление данных DELETE</a></div>
+                    <div class="item"><a href="comments.html">Комментарии</a></div>
+                </div>
+                <div class="column">
+                    <div class="item"><a href="operators.html">Операторы</a></div>
+                    <div class="item"><a href="distinct.html">Выборка уникальных значений SELECT DISTINCT</a></div>
+                    <div class="item"><a href="order.html">Сортировка или ORDER BY</a></div>
+                    <div class="item"><a href="min.html">MIN, MAX</a></div>
+                    <div class="item"><a href="in.html">IN, BETWEEN</a></div>
+                    <div class="item"><a href="union.html">Объединение UNION</a></div>
+                    <div class="item"><a href="null.html">NULL значения</a></div>
+                    <div class="item"><a href="insert.html">Вставки INSERT</a></div>
+                    <div class="item"><a href="sp.html">Хранимые процедуры</a></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
