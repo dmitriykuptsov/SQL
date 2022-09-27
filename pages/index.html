@@ -29,6 +29,7 @@
             function hideSearch() {
                 window.event.preventDefault();
                 $("#search-results").hide();
+                $("#query").val("");
                 return false;
             }
 
@@ -44,6 +45,8 @@
             function onSearch() {
                 window.event.preventDefault();
                 var query = $("#query").val();
+                if (query == "") return;
+
                 var results = [];
                 var ids = [];
                 var len = $(".page").length;
@@ -55,10 +58,9 @@
                         results.push(obj);
                         ids.push(id);
                     }
+                    
                     if (count == len) {
-                        console.log(count);
                         html = "";
-                        console.log(results)
                         var j = 0;
                         results.forEach(function(obj) {
                             var text = $(obj).text();
@@ -66,13 +68,13 @@
                             var id = ids[j];
                             j += 1;
                             console.log(id)
-                            html += "<div><div class=\"item\"><a href=\"#\" onclick=\"showSearch('" + id + "')\">Перейти</a></div>";
-                            html += text.substring(i - 40, i + 40) + "</div>"
+                            html += "<div><div class=\"item\"><a href=\"#\" onclick=\"showSearch('" + id + "')\">Найдено на странице "  + id + "</a></div>";
+                            html += text.substring(i - 100, i + 100) + "</div>"
                         });
                     }
                     count += 1;
                 });
-
+                
                 $("#search-results").html(html);
                 $("#search-results").show();
             }
@@ -104,8 +106,9 @@
                             Реляционные базы данных представляют собой набор таблиц, 
                             которые могут быть связаны между собой по средствам первичных 
                             и внешних ключей. Каждая таблица состоит из набора кортежей,
-                            или строк. В свою очередь строка состоит из столбцов. Каждый
-                            столбец имеет тип данных, определенный при проектирование базы данных.
+                            или строк. В свою очередь каждая строка состоит из столбцов. Каждый
+                            столбец имеет тип данных, определенный при проектирование базы данных, а 
+                            так же имя, и может иметь ограничения.
                         </div>
                         <div class="paragraph">
                             Язык SQL - это структурированный язык запросов к реляционной базе данных.
@@ -113,13 +116,13 @@
                             таблиц, применять фильтры, агрегировать данные, сортировать выходные данные,
                             обновлять данные, удалять данные, а также создавать объекты в базе данных (
                             например создавать новые таблицы, представления, хранимые процедуры, пользовательские
-                            функции, новые базы данных, создавать индексы). 
+                            функции, новые базы данных, индексы). 
                         </div>
                         <div class="paragraph">
                             Как уже было упомянуто, каждая колонка должна иметь определенный тип данных.
                             Перечислим основные типы данных (полный список типов данных можно найти
                             на официальном 
-                            <a href="https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver16">сайте Microsoft</a>):
+                            <a href="https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver16">сайте</a> Microsoft):
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -161,11 +164,11 @@
                                 <code>
 USE shop;
 
-CREATE TABLE Customer (
+CREATE TABLE Customers (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	FName NVARCHAR(100),
 	LName NVARCHAR(100),
-	Email NVARCHAR(100),
+	Email NVARCHAR(100) UNIQUE,
 	RegisteredAt DATETIME
 );
 
@@ -183,43 +186,50 @@ CREATE TABLE Products (
 		FOREIGN KEY (ProductCategoryId) REFERENCES Categories(Id)
 );
 
-CREATE TABLE CustomerProducts (
+CREATE TABLE Orders (
+	Id INT PRIMARY KEY IDENTITY(1, 1),
+	CustomerId INT NOT NULL,
+	OrderDate DATETIME NOT NULL,
+	CONSTRAINT FK_OrdersCustomers
+		FOREIGN KEY (CustomerId) REFERENCES Customers(Id)
+);
+
+CREATE TABLE OrderedProducts (
 	Id INT PRIMARY KEY IDENTITY(1,1),
 	ProductId INT NOT NULL,
-	CustomerId INT NOT NULL,
+	OrderId INT NOT NULL,
 	CONSTRAINT FK_CustomersProducts_Products
 		FOREIGN KEY (ProductId) REFERENCES Products(Id),
-	CONSTRAINT FK_CustomersProducts_Customers
-		FOREIGN KEY (CustomerId) REFERENCES Customer(id)
-)
+	CONSTRAINT FK_OrdersProducts_Customers
+		FOREIGN KEY (OrderId) REFERENCES Orders(Id)
+);
 
-INSERT INTO Customer(FName, LName, Email, RegisteredAt) VALUES(N'Иван', N'Иванов', 'ivan.ivanov@gmail.com', SYSDATETIME());
-INSERT INTO Customer(FName, LName, Email, RegisteredAt) VALUES(N'Петр', N'Петров', 'petr.petrov@gmail.com', SYSDATETIME());
+DECLARE @date DATETIME;
+SET @date = SYSDATETIME();
+
+INSERT INTO Customers(FName, LName, Email, RegisteredAt) VALUES(N'Иван', N'Иванов', 'ivan.ivanov@gmail.com', @date);
+INSERT INTO Customers(FName, LName, Email, RegisteredAt) VALUES(N'Петр', N'Петров', 'petr.petrov@gmail.com', @date);
+INSERT INTO Customers(FName, LName, Email, RegisteredAt) VALUES(N'Андрей', N'Андреев', 'andrei.andreev@gmail.com', @date);
 
 INSERT INTO Categories(Name) VALUES(N'Бытовая химия');
 INSERT INTO Categories(Name) VALUES(N'Продукты питания');
 INSERT INTO Categories(Name) VALUES(N'Бытовая техника');
 
-INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Мыло хозяйственное', 
-    (SELECT Id FROM Categories WHERE Name LIKE 'Бытовая химия'), 0.7);
-INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Яблоки', 
-    (SELECT Id FROM Categories WHERE Name LIKE 'Продукты питания'), 1.1);
-INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Сыр', 
-    (SELECT Id FROM Categories WHERE Name LIKE 'Продукты питания'), 7.2);
-INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Стиральная машина', 
-    (SELECT Id FROM Categories WHERE Name LIKE 'Бытовая техника'), 399.99);
-INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Посудомоечная машина', 
-    (SELECT Id FROM Categories WHERE Name LIKE 'Бытовая техника'), 599.99);
-INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Телевизор', 
-    (SELECT Id FROM Categories WHERE Name LIKE 'Бытовая техника'), 599.99);
+INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Мыло хозяйственное', (SELECT Id FROM Categories WHERE Name LIKE 'Бытовая химия'), 0.7);
+INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Яблоки', (SELECT Id FROM Categories WHERE Name LIKE 'Продукты питания'), 1.1);
+INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Сыр', (SELECT Id FROM Categories WHERE Name LIKE 'Продукты питания'), 7.2);
+INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Стиральная машина', (SELECT Id FROM Categories WHERE Name LIKE 'Бытовая техника'), 399.99);
+INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Посудомоечная машина', (SELECT Id FROM Categories WHERE Name LIKE 'Бытовая техника'), 599.99);
+INSERT INTO Products(ProductName, ProductCategoryId, Price) VALUES(N'Телевизор', (SELECT Id FROM Categories WHERE Name LIKE 'Бытовая техника'), 599.99);
 
-INSERT INTO CustomerProducts(ProductId, CustomerId) VALUES((SELECT Id FROM Products WHERE ProductName LIKE N'Мыло хозяйственное'), 
-	(SELECT Id FROM Customer WHERE LName LIKE N'Иванов' AND FNAME LIKE 'Иван'));
-INSERT INTO CustomerProducts(ProductId, CustomerId) VALUES((SELECT Id FROM Products WHERE ProductName LIKE N'Сыр'), 
-	(SELECT Id FROM Customer WHERE LName LIKE N'Иванов' AND FNAME LIKE 'Иван'));
-INSERT INTO CustomerProducts(ProductId, CustomerId) VALUES((SELECT Id FROM Products WHERE ProductName LIKE N'Телевизор'), 
-	(SELECT Id FROM Customer WHERE LName LIKE N'Иванов' AND FNAME LIKE 'Иван'));
+INSERT INTO Orders(CustomerId, OrderDate) VALUES((SELECT Id FROM Customers WHERE FName LIKE N'Иван' AND LName LIKE N'Иванов'), @date);
 
+INSERT INTO OrderedProducts(ProductId, OrderId) VALUES((SELECT Id FROM Products WHERE ProductName LIKE N'Мыло хозяйственное'), 
+	(SELECT o.Id FROM Orders o INNER JOIN Customers c ON o.CustomerId = c.Id WHERE c.LName LIKE N'Иванов' AND c.FNAME LIKE 'Иван' AND o.OrderDate = @date));
+INSERT INTO OrderedProducts(ProductId, OrderId) VALUES((SELECT Id FROM Products WHERE ProductName LIKE N'Сыр'), 
+	(SELECT o.Id FROM Orders o INNER JOIN Customers c ON o.CustomerId = c.Id WHERE c.LName LIKE N'Иванов' AND c.FNAME LIKE 'Иван' AND o.OrderDate = @date));
+INSERT INTO OrderedProducts(ProductId, OrderId) VALUES((SELECT Id FROM Products WHERE ProductName LIKE N'Телевизор'), 
+	(SELECT o.Id FROM Orders o INNER JOIN Customers c ON o.CustomerId = c.Id WHERE c.LName LIKE N'Иванов' AND c.FNAME LIKE 'Иван' AND o.OrderDate = @date));
                                 </code>
                             </pre>
                         </div>
@@ -230,13 +240,13 @@ INSERT INTO CustomerProducts(ProductId, CustomerId) VALUES((SELECT Id FROM Produ
                             <img alt="DB Example" class="img" src="img/db_diagram.png" />
                         </div>
                     </div>
-                    <div class="item"><a href="select.html" onclick="showPage('select')">Выборка: SELECT</a></div>
+                    <div class="item"><a href="select.html" onclick="showPage('select')">Выборка</a></div>
                     <div class="page" id="select">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
                         <div class="paragraph">
-                            Операция SELECT используется для выборки данных из базы данных. Это одина из самых распростаненных
+                            Операция SELECT используется для выборки данных из базы данных. Это одна из самых распростаненных
                             операций, используемых в SQL. Например, используя наш пример базы данных, мы можем выбрать все строки 
-                            слудующим образом: 
+                            слудующим образом из таблицы Products: 
                         </div>
                         <div class="paragraph">
                             <pre>
@@ -264,7 +274,7 @@ SELECT ProductName, Price FROM Products;
                         </div>
                     </div>
                     <div class="item">
-                        <a href="where.html" onclick="showPage('where')">Запрос с условием: WHERE</a>
+                        <a href="where.html" onclick="showPage('where')">Выборка с фильтрами</a>
                     </div>
                     <div class="page" id="where">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
@@ -424,6 +434,7 @@ CASE
 	WHEN (Price <= 1) THEN 'Cheap'
 	WHEN (Price > 1 AND Price <= 10) THEN 'Moderate'
 	WHEN (Price > 10) THEN 'Expensive'
+    ELSE 'Should never be here'
 END AS 'Price category'
 FROM Products
                                 </code>
@@ -436,10 +447,72 @@ FROM Products
                             <img alt="CASE statement" class="img" src="img/case.png"/>
                         </div>
                     </div>
-                    <div class="item"><a href="any.html">ANY, ALL</a></div>
-                    <div class="item"><a href="aliases.html">Альясы</a></div>
-                    <div class="item"><a href="update.html">Обновление данных UPDATE</a></div>
-                    <div class="item"><a href="views.html">Представления</a></div>
+                    <div class="item"><a href="aliases.html" onclick="showPage('aliases')">Альясы</a></div>
+                    <div class="page" id="aliases">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            В SQL альясы используються для того, чтобы дать таблице или колонке временное имя.
+                            Альяс действует только на время выполнения запроса. И очень часто используются 
+                            для того, чтобы дать легкочитабельное имя таблице. Альясы создаються с использованием
+                            ключевого слова AS.
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT p.* FROM Products AS p;
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
+                    <div class="item"><a href="update.html" onclick="showPage('update')">Обновление данных</a></div>
+                    <div class="page" id="update">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Для обновления данных в таблице существует специальное ключевое слово UPDATE.
+                            Также как и для SELECT операции, в UPDATE можно использовать WHERE для выборки только тех строк,
+                            которые представляют интерес. Приведем пример самого простого выражения для обновления:
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+UPDATE Products SET Price = 1.5 WHERE Products.Id = 1;
+                                </code>
+                            </pre>
+                        </div>
+                        <div class="paragraph">
+                            Но также как и в SELECT в выражение WHERE можно использовать подзапросы,
+                            например:
+                            <pre>
+                                <code>
+UPDATE Products SET Price = 1.5 WHERE Products.ProductCategoryId IN 
+    (SELECT c.Id FROM Categories AS c WHERE c.Name LIKE 'Бытовая химия')
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
+                    <div class="item"><a href="views.html" onclick="showPage('views')">Представления</a></div>
+                    <div class="page" id="views">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            В SQL, представления являются особым объектом, который содержит данные, полученные запросом SELECT из обычных таблиц. 
+                            Это виртуальная таблица, к которой можно обратиться как к обычным таблицам и получить хранимые данные. 
+                            Представление в SQL может содержать в себе как данные из одной единственной таблицы, так и из нескольких таблиц.
+
+                            Представления нужны для того, чтобы упростить работу с базой данных и ускорить время ответа сервера. 
+                            Так как представление — это уже результат некой выборки данных с помощью SELECT, то, очевидно, в следующий раз 
+                            вместо запроса к нескольким таблицам достаточно просто обратиться к уже созданному представлению.
+                            <pre>
+                                <code>
+CREATE OR ALTER VIEW AllProductsWithCategories  
+    AS SELECT p.*, c.Name AS CategoryName FROM Products AS p
+	    INNER JOIN Categories AS c ON p.ProductCategoryId = c.id;
+GO
+SELECT * FROM AllProductsWithCategories;
+                                </code>
+                            </pre>
+                            <img class="img" src="img/view.png" alt="VIEW"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="column">
                     <div class="item"><a href="major_queries.html" onclick="showPage('major_queries')">Основные типы запросов</a></div>
@@ -492,22 +565,676 @@ ORDER BY Id ASC
                             <img alt="OFFSET and FETCH NEXT result" class="img" src="img/fetch_next.png" />
                         </div>
                     </div>
-                    <div class="item"><a href="and.html">Логические операторы AND, OR, NOT</a></div>
-                    <div class="item"><a href="aggregation.html">Агрегирующие функции COUNT, SUM, AVG</a></div>
-                    <div class="item"><a href="intersect.html">INTERSECT</a></div>
-                    <div class="item"><a href="join.html">Объединения или JOIN запросы</a></div>
-                    <div class="item"><a href="exists.html">EXISTS</a></div>
-                    <div class="item"><a href="select_into.html">SELECT INTO</a></div>
-                    <div class="item"><a href="delete.html">Удаление данных DELETE</a></div>
-                    <div class="item"><a href="comments.html">Комментарии</a></div>
+                    <div class="item"><a href="and.html" onclick="showPage('and')">Логические операторы AND, OR, NOT</a></div>
+                    <div class="page" id="and">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Мы уже использовали составные логические выражения при конструирование запросов 
+                            к базе данных. В данном разделе рассмотрим логические операторы AND, OR, NOT.
+                            Но прежде чем мы приступим к рассмотрению их использования, приведем несколько
+                            фактов из дискретной математики. А именно расмотрим таблицы истинности, основные 
+                            свойства булевой алгебры, и приоритеты операторов.
+                        </div>
+                        <div class="paragraph">
+                            Таблица истинности для отрицания:
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>A</th>
+                                        <th>NOT A</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="paragraph">
+                            Таблица истинности для операции AND:
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>A</th>
+                                        <th>B</th>
+                                        <th>A AND B</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="paragraph">
+                            Таблица истинности для операции OR:
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>A</th>
+                                        <th>B</th>
+                                        <th>A OR B</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="paragraph">
+                            Таблица истинности для операции =:
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>A</th>
+                                        <th>B</th>
+                                        <th>A = B</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            False
+                                        </td>
+                                        <td>
+                                            True
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="paragraph">
+                            Основные аксиомы булевой алгебры (полный список можно найти <a href="https://ru.wikipedia.org/wiki/%D0%91%D1%83%D0%BB%D0%B5%D0%B2%D0%B0_%D0%B0%D0%BB%D0%B3%D0%B5%D0%B1%D1%80%D0%B0">здесь</a>)
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>Закон коммутативности</td>
+                                        <td>A AND B = B AND A</td>
+                                        <td>A OR B = B OR A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Закон ассоциативности
+                                        </td>
+                                        <td>
+                                            (A AND B) AND C = A AND (B AND A)
+                                        </td>
+                                        <td>
+                                            (A OR B) OR C = A OR (B OR A)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Закон дистрибутивности
+                                        </td>
+                                        <td>
+                                            A OR (B AND C) = (A OR B) AND (A OR C)
+                                        </td>
+                                        <td>
+                                            A AND (B OR C) = (A AND B) OR (A AND C)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Закон поглащения
+                                        </td>
+                                        <td>
+                                            A OR (A AND B) = A
+                                        </td>
+                                        <td>
+                                            A AND (A OR B) = A
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Дополнительность
+                                        </td>
+                                        <td>
+                                            A OR NOT A = True
+                                        </td>
+                                        <td>
+                                            A AND NOT A = False
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="paragraph">
+                            При составление логических выражений очень важно иметь ввиду приоритеты операторов.
+                            Так, некоторые операторы имеют больший приоритет и соответсвенно будут обработаны SQL 
+                            в первую очередь (заметим, что фигурными скобками можно установить нужный порядок
+                            обработки любого логического высказывания).
+
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Оператор</th>
+                                        <th>Приоритет</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Круглые скобки</td>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Отрицание</td>
+                                        <td>2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>И</td>
+                                        <td>3</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ИЛИ</td>
+                                        <td>4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Эквиваленция</td>
+                                        <td>5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="paragraph">
+                            Теперь, зная основные свойства булевой алгебры, мы можем составлять сложные WHERE выражения.
+                            Например, для того,чтобы найти все товары которые находятся в категории Бытовая химия и 
+                            Продукты питания, и, для которых цена находится в ценовом диапазоне от 1 до 5 условных единиц,
+                            мы можем выполнить следующий запрос:
+                            <pre>
+                                <code>
+SELECT p.ProductName FROM Products AS p
+    INNER JOIN Categories AS pc ON p.ProductCategoryId = pc.Id
+        WHERE pc.Name IN ('Бытовая химия', 'Продукты питания') AND
+            (p.Price >= 1 AND p.Price <= 5)
+                                </code>
+                            </pre>
+                        </div>
+                        <div class="paragraph">
+                            <img alt="Logical expressions result" src="img/logical.png" class="img"/>
+                        </div>
+                    </div>
+                    <div class="item"><a href="aggregation.html" onclick="showPage('aggregation')">Агрегирующие функции COUNT, SUM, AVG, STDEV</a></div>
+                    <div class="page" id="aggregation">
+                        <div class="close-btn"><a href="#" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Агрегирующие функции применимы вместе с ключевым словом GROUP BY. Мы уже встречали ранее 
+                            запросы с группировкаой. В таблице приведенной ниже мы перечисляем некоторые агрегирующие 
+                            функции:
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Функция</th>
+                                        <th>Описание</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>COUNT</td>
+                                        <td>Возвращает количество строк в каждой из групп</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SUM</td>
+                                        <td>Возвращает сумму всех строк в каждой из групп</td>
+                                    </tr>
+                                    <tr>
+                                        <td>AVG</td>
+                                        <td>Возвращает среднее арифметичское всех строк в каждой из групп</td>
+                                    </tr>
+                                    <tr>
+                                        <td>STDEV</td>
+                                        <td>Возвращает стандартное отклонение для всех строк в каждой из групп</td>
+                                    </tr>
+                                    <tr>
+                                        <td>MIN</td>
+                                        <td>Возврашает минимум</td>
+                                    </tr>
+                                    <tr>
+                                        <td>MAX</td>
+                                        <td>Возврашает минимум</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT COUNT(Price) AS N, SUM(Price) AS Sum, AVG(Price) AS Mean, ISNULL(STDEV(Price), 0) AS 'Standard deviation' FROM
+    Products GROUP BY ProductCategoryId
+        ORDER BY COUNT(Price) DESC
+                                </code>
+                            </pre>
+                            <img class="img" alg="Aggregation functions" src="img/aggregation_functions.png"/>
+                        </div>
+                    </div>
+                    <div class="item"><a href="intersect.html" onclick="showPage('intersect')">Пересечения INTERSECT</a></div>
+                    <div class="page" id="intersect">
+                        <div class="close-btn"><a href="#" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            INTERSECT позволяет найти пересечение в строках двух таблиц и вернуть как 
+                            результат это пересечение. Для того, чтобы INTERSECT корректно работал
+                            необходимо, чтобы тип и количество колонок были одинаковыми для всех таблиц.
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT * FROM Products WHERE Id IN (
+    SELECT ProductId FROM OrderedProducts WHERE OrderId = 
+        (SELECT o.Id FROM Orders o INNER JOIN Customers c ON 
+            o.CustomerId = c.Id WHERE c.LName LIKE N'Петров' AND 
+                c.FNAME LIKE 'Петр')
+INTERSECT
+SELECT ProductId FROM OrderedProducts WHERE OrderId = 
+    (SELECT o.Id FROM Orders o INNER JOIN Customers c ON 
+        o.CustomerId = c.Id WHERE c.LName LIKE N'Иванов' AND 
+            c.FNAME LIKE 'Иван')
+);
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
+                    <div class="item"><a href="join.html" onclick="showPage('join')">Объединения или JOIN запросы</a></div>
+                    <div class="page" id="join">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            JOIN используется для объединения строк из двух и более таблиц, основываясь на связанных колонках
+                            в этих таблицах. Так, например, в нашем примере таблица Products и OrderedProducts имеют связь по колонке
+                            Id/ProductId, и соответственно можно сделать слияние двух таблиц с помошью операции JOIN.
+                        </div>
+                        <div class="paragraph">
+                            Самый распространенный тип объединения - это INNER JOIN, который возвращает только те строки, для которых
+                            есть общее значение колонки как в левой, так и в правой таблице. Схематично результат данного запроса
+                            можно представить следующей диаграммой Венна:
+                            <img alt="INNER JOIN" src="img/img_innerjoin.gif" class="img" style="width: 20%"/>
+                        </div>
+                        <div class="paragraph">
+                            Давайте выбирем все строки из таблиц Products и Categories используя связанные колонки для объединения:
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT p.ProductName, c.Name AS CategoryName 
+    FROM Products AS p 
+        INNER JOIN Categories AS c ON p.ProductCategoryId = c.Id
+                                </code>
+                            </pre>
+                            <img alt="INNER JOIN" src="img/inner_join_result.png" class="img" style="width: 20%"/>
+                        </div>
+                        <div class="paragraph">
+                            RIGHT JOIN возвратит тот же результат, что и INNER JOIN, плюс ко всему
+                            строки из правой таблицы и NULL для значения для левой таблицы, строки которой не могут
+                            быть сопоставленны с правой таблицей. Ниже представлен результат такого объединения 
+                            на диаграмме Венна:
+
+                            <img alt="INNER JOIN" src="img/img_rightjoin.gif" class="img" style="width: 20%"/>
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT * FROM OrderedProducts op
+	RIGHT JOIN Products p
+		ON op.ProductId = p.Id;
+                                </code>
+                            </pre>
+                            <img alt="INNER JOIN" src="img/right_join_result.png" class="img" style="width: 30%"/>
+                        </div>
+                        <div class="paragraph">
+                            LEFT JOIN похож RIGHT JOIN - он возвратит все строки из правой и левой таблицы,
+                            для которых есть совпадение по полю, плюс все оставшиеся строки из левой таблицы
+                            и NULL значения для правой таблицы (для которых не было совпадений). На диаграмме 
+                            Венна эта операция выглядит следующим образом:
+                            <img alt="INNER JOIN" src="img/img_leftjoin.gif" class="img" style="width: 20%"/>
+                        </div>
+                        <div class="paragraph">
+                            И наконец, FULL JOIN возвратит объединенные результаты RIGHT и LEFT JOIN.
+
+                            <img alt="INNER JOIN" src="img/img_fulljoin.gif" class="img" style="width: 20%"/>
+                        </div>
+                    </div>
+                    <div class="item"><a href="any.html" onclick="showPage('any')">ANY</a></div>
+                    <div class="page" id="any">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            ANY возврашает True если логическое выражение выполняется хотя бы для одного значения:                            
+                            <pre>
+                                <code>
+SELECT * FROM Products p 
+	WHERE p.Price = ANY (SELECT Price FROM (VALUES(400), (399.99), (5)) AS TempTable(Price));
+                                </code>
+                            </pre>
+                            <img class="img" alt="ANY" src="img/any.png"/>
+                        </div>
+                        <div class="paragraph">
+                            ALL возврашает True если логическое выражение выполняется для всех значений:                            
+                            <pre>
+                                <code>
+SELECT * FROM Products p 
+	WHERE p.Price > ALL (SELECT Price FROM (VALUES(400), (399.99), (5)) AS TempTable(Price));
+                                </code>
+                            </pre>
+                            <img class="img" alt="ALL" src="img/all.png"/>
+                        </div>
+                    </div>
+                    <div class="item"><a href="exists.html" onclick="showPage('exists')">EXISTS</a></div>
+                    <div class="page" id="exists">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Возврашает True если результат выборки содержит хотя бы одну строку:
+                            <pre>
+                                <code>
+IF EXISTS (SELECT name FROM master.sys.databases WHERE name = N'shop')
+    PRINT 'DATABSE EXISTS';
+ELSE
+    PRINT 'DATABASE DOES NOT EXIST'
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
+                    <div class="item"><a href="delete.html" onclick="showPage('delete')">Удаление данных </a></div>
+                    <div class="page" id="delete">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Для удаления данных из таблице существует специальное ключевое слово DELETE.
+                            Также как и для SELECT и UPDATE операции, в DELETE можно использовать WHERE для удаления только тех строк,
+                            которые представляют интерес. Приведем пример самого простого выражения для обновления:
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+DELETE FROM OrderedProducts WHERE OrderedProducts.ProductId = 3;
+DELETE FROM Products WHERE Products.Id = 3;
+                                </code>
+                            </pre>
+                        </div>
+                        <div class="paragraph">
+                            Если таблица связанная, и в связанной таблице есть записи, которые ссылаются
+                            на данную таблицу, то удалить сначала в зависимых таблицах.
+                        </div>
+                        <div class="paragraph">
+                            Также как и в SELECT в выражение WHERE можно использовать подзапросы,
+                            например:
+                            <pre>
+                                <code>
+DELETE FROM OrderedProducts WHERE OrderedProducts.ProductId IN 
+    (SELECT p.Id FROM Products p WHERE ProductCategoryId = 
+        (SELECT c.Id FROM Categories AS c WHERE c.Name LIKE 'Бытовая химия'))
+
+DELETE FROM  Products WHERE Products.ProductCategoryId IN 
+    (SELECT c.Id FROM Categories AS c WHERE c.Name LIKE 'Бытовая химия')
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
+                    <div class="item"><a href="comments.html" onclick="showPage('comments')">Комментарии</a></div>
+                    <div class="page" id="comments">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Когда запрос очень громоздкий рекомендуется к коду добавлять комментарии. В SQL 
+                            коментарии могут быть однострочнимы и многострочными:
+
+                            <pre>
+                                <code>
+-- Это однострочный коментарий
+-- Данный запрос выдаст все продукты
+SELECT * FROM Products -- WHERE Id = 2
+                                </code>
+                            </pre>
+                            А это уже многострочный комментарий:
+                            <pre>
+                                <code>
+/* Данный запрос выдаст только 
+один продукт
+*/ 
+SELECT * FROM Products WHERE Id = 2
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
                 </div>
                 <div class="column">
                     <div class="item"><a href="operators.html">Операторы</a></div>
                     <div class="item"><a href="distinct.html">Выборка уникальных значений SELECT DISTINCT</a></div>
                     <div class="item"><a href="order.html">Сортировка или ORDER BY</a></div>
-                    <div class="item"><a href="min.html">MIN, MAX</a></div>
-                    <div class="item"><a href="in.html">IN, BETWEEN</a></div>
-                    <div class="item"><a href="union.html">Объединение UNION</a></div>
+                    <div class="item"><a href="min.html" onclick="showPage('min')">Встроенные функции</a></div>
+                    <div class="page" id="min">
+                        <div class="close-btn"><a href="#" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Ниже мы приводим функции, которые часто встречаются на практике. Полный список функций
+                            можно посмотреть <a href="https://www.w3schools.com/sql/sql_ref_sqlserver.asp">здесь</a>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Функция</th>
+                                        <th>Описание</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>ISNULL</td>
+                                        <td>Проверяет являеться ли параметр NULL, и если да заменяет его значением переданным как параметр</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SYSDATETIME</td>
+                                        <td>Возвращает текущее системное время</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CONCAT</td>
+                                        <td>Объединяет две и более строк в одну</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TRIM</td>
+                                        <td>Удаляет пробелы и табы в начале и конце строки переданной как параметр</td>
+                                    </tr>
+                                    <tr>
+                                        <td>REPLACE</td>
+                                        <td>Заменить в строке</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SUBSTRING</td>
+                                        <td>Выбрать подстроку в строке</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ABS</td>
+                                        <td>Возвращает абсолютное значение числа</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ROUND</td>
+                                        <td>Округляет число до N знаков после запятой (где N передается как параметр)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CEIL</td>
+                                        <td>Возвращает целое число большее или равное тому, которое передано как параметр</td>
+                                    </tr>
+                                    <tr>
+                                        <td>FLOOR</td>
+                                        <td>Возвращает целое число меньшее или равное тому, которое передано как параметр</td>
+                                    </tr>
+                                    <tr>
+                                        <td>COUNT</td>
+                                        <td>Возврашает число строк в результатирующей таблице</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="item"><a href="in.html" onclick="showPage('in')">IN и BETWEEN</a></div>
+                    <div class="page" id="in">
+                        <div class="close-btn"><a href="#" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            IN возврашает True если значение присутствует в наборе:
+                            <pre>
+                                <code>
+SELECT * FROM Products p 
+    WHERE p.Price IN (399.99, 499.99, 599.99);
+                                </code>
+                            </pre>
+                            <img class="img" src="img/in.png" alt="IN" />
+                        </div>
+                        <div class="paragraph">
+                            BETWEEN возврашает True если значение находиться в заданом диапазоне:
+                            <pre>
+                                <code>
+SELECT * FROM Products p 
+    WHERE p.Price BETWEEN 0.1 AND 5;
+                                </code>
+                            </pre>
+                            <img class="img" src="img/between.png" alt="IN" />
+                        </div>
+                    </div>
+                    <div class="item"><a href="union.html" onclick="showPage('union')">Объединение UNION</a></div>
+                    <div class="page" id="union">
+                        <div class="close-btn"><a href="#" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            UNION позволяет объединенить строки из двух таблиц и более таблиц, и вернуть  
+                            результат этого объединения как одну таблицу. Для того, чтобы UNION корректно работал
+                            необходимо, чтобы тип и количество колонок были одинаковыми для всех таблиц.
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT CONCAT(FName, ' ', LName) AS Name FROM Customers WHERE LName LIKE 'Петров'
+UNION
+SELECT CONCAT(FName, ' ', LName) AS Name FROM Customers WHERE LName LIKE 'Андреев'
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
                     <div class="item"><a href="null.html">NULL значения</a></div>
                     <div class="item"><a href="insert.html">Вставки INSERT</a></div>
                     <div class="item"><a href="sp.html">Хранимые процедуры</a></div>
