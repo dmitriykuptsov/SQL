@@ -1235,9 +1235,42 @@ SELECT CONCAT(FName, ' ', LName) AS Name FROM Customers WHERE LName LIKE 'Анд
                             </pre>
                         </div>
                     </div>
-                    <div class="item"><a href="null.html">NULL значения</a></div>
+                    <!-- div class="item"><a href="null.html">NULL значения</a></div -->
                     <div class="item"><a href="insert.html">Вставки INSERT</a></div>
-                    <div class="item"><a href="sp.html">Хранимые процедуры</a></div>
+                    <div class="item"><a href="sp.html" onclick="showPage('sp')">Хранимые процедуры</a></div>
+                    <div class="page" id="sp">
+                        <div class="close-btn"><a href="#" onclick="hidePage()">Закрыть</a></div>
+                        <div class="paragraph">
+                            Храни́мая процедура - объект базы данных, представляющий собой набор SQL-инструкций, который компилируется один 
+                            раз и хранится на сервере. Хранимые процедуры очень похожи на обыкновенные процедуры языков высокого уровня, у 
+                            них могут быть входные и выходные параметры и локальные переменные, в них могут производиться числовые вычисления 
+                            и операции над символьными данными, результаты которых могут присваиваться переменным и параметрам. В хранимых 
+                            процедурах могут выполняться стандартные операции с базами данных (как DDL, так и DML). Кроме того, в хранимых 
+                            процедурах возможны циклы и ветвления, то есть в них могут использоваться инструкции управления процессом исполнения.
+                        </div>
+                        <div class="paragraph">
+                            Хранимые процедуры похожи на определяемые пользователем функции. Основное различие заключается в том, что пользовательские 
+                            функции можно использовать как и любое другое выражение в SQL запросе, в то время как хранимые процедуры должны быть вызваны 
+                            с помощью функции CALL
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+CREATE OR ALTER PROCEDURE SelectAllOrdersOfACustomer 
+@FName NVARCHAR(100),
+@LName NVARCHAR(100)
+AS
+BEGIN
+SELECT o.Id, o.OrderDate FROM Orders AS o
+		INNER JOIN Customers AS c ON o.CustomerId = c.Id
+			WHERE c.FName = @FName AND c.LName = @LName
+END
+
+EXEC SelectAllOrdersOfACustomer @Fname = 'Петр', @Lname = 'Петров';
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
