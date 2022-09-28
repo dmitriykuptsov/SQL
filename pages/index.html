@@ -1357,6 +1357,7 @@ SELECT * FROM Products WHERE Id = 2
                     </div>
                     <div class="item"><a href="distinct.html" onclick="showPage('distinct')">Выборка уникальных значений SELECT DISTINCT</a></div>
                     <div class="page" id="distinct">
+                        <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Если требуется выбрать уникальные значения, то можно использовать ключевое слово DISTINCT. Например, в следующем 
                             куске кода мы выбираем уникальные продукты, которые были когда либо заказани любым покупателем: 
@@ -1498,7 +1499,19 @@ SELECT CONCAT(FName, ' ', LName) AS Name FROM Customers WHERE LName LIKE 'Анд
                         </div>
                     </div>
                     <!-- div class="item"><a href="null.html">NULL значения</a></div -->
-                    <div class="item"><a href="insert.html">Вставки INSERT</a></div>
+                    <div class="item"><a href="insert.html" onclick="showPage('insert')">Вставки INSERT</a></div>
+                    <div class="page" id="insert">
+                        <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
+                        <div class="paragraph">
+                            Ключевое слово INSERT используется для вставки строк в таблицу. Для того что бы вставить значение в
+                            таблицу необходимо указать имена колонок, для которых будем делать вставки и сами значение. Например,
+                            <pre>
+                                <code>
+INSERT INTO Customers(FName, LName, Email, RegisteredAt) VALUES('Someone', 'Unknown', 'someone@yahoo.com')
+                                </code>
+                            </pre> 
+                        </div>
+                    </div>
                     <div class="item"><a href="sp.html" onclick="showPage('sp')">Хранимые процедуры</a></div>
                     <div class="page" id="sp">
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
