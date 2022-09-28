@@ -55,6 +55,12 @@
     width: 40%;
 }
 
+.close-btn {
+    position:fixed;
+    top: 20px;
+    left: 20px;
+}
+
 .blog-item {
     margin-top: 10px;
 }
