@@ -4,15 +4,15 @@
         <link href="https://fonts.googleapis.com/css?family=Schoolbell&v1" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css" integrity="sha512-Ez0cGzNzHR1tYAv56860NLspgUGuQw16GiOOp/I2LuTmpSK9xDXlgJz3XN4cnpXWDmkNBKXR/VDMTCnAaEooxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="css/sql.css">
-	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9M2C9WVE1L"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-9M2C9WVE1L"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
 
-		gtag('config', 'G-9M2C9WVE1L');
-	</script>
+            gtag('config', 'G-9M2C9WVE1L');
+        </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js" integrity="sha512-EKWWs1ZcA2ZY9lbLISPz8aGR2+L7JVYqBAYTq5AXgBkSjRSuQEGqWx8R1zAX16KdXPaCjOCaKE8MCpU0wcHlHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
         <title>Основы SQL</title>
@@ -1518,7 +1518,7 @@ SELECT CONCAT(FName, ' ', LName) AS Name FROM Customers WHERE LName LIKE 'Анд
                             таблицу необходимо указать имена колонок, для которых будем делать вставки и сами значения. Например:
                             <pre>
                                 <code>
-INSERT INTO Customers(FName, LName, Email, RegisteredAt) VALUES('Someone', 'Unknown', 'someone@yahoo.com')
+INSERT INTO Customers(FName, LName, Email, RegisteredAt) VALUES('Someone', 'Unknown', 'someone@yahoo.com', SYSDATETIME());
                                 </code>
                             </pre> 
                         </div>
