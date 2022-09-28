@@ -444,7 +444,7 @@ CASE
 	WHEN (Price <= 1) THEN 'Cheap'
 	WHEN (Price > 1 AND Price <= 10) THEN 'Moderate'
 	WHEN (Price > 10) THEN 'Expensive'
-    ELSE 'Should never be here'
+	ELSE 'Should never be here'
 END AS 'Price category'
 FROM Products
                                 </code>
