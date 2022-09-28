@@ -1129,7 +1129,226 @@ SELECT * FROM Products WHERE Id = 2
                     </div>
                 </div>
                 <div class="column">
-                    <div class="item"><a href="operators.html">Операторы</a></div>
+                    <div class="item"><a href="operators.html" onclick="showPage('operators')">Операторы</a></div>
+                    <div class="page" id="operators">
+                        <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
+                        <div class="paragraph">
+                            Арифметические операторы
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Оператор</th>
+                                        <th>Описание</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            +
+                                        </td>
+                                        <td>
+                                            Сложение
+                                        </td>
+                                        <td>
+                                            -
+                                        </td>
+                                        <td>
+                                            Вычитание
+                                        </td>
+                                        <td>
+                                            /
+                                        </td>
+                                        <td>
+                                            Деление
+                                        </td>
+                                        <td>
+                                            *
+                                        </td>
+                                        <td>
+                                            Умножение
+                                        </td>
+                                    </tr>                                    
+                                </tbody>
+                            </table>
+                            Операторы сравнения
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Оператор</th>
+                                        <th>Описание</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            &gt;
+                                        </td>
+                                        <td>
+                                            Больше
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            &lt;
+                                        </td>
+                                        <td>
+                                            Меньше
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            &gt;=
+                                        </td>
+                                        <td>
+                                            Больше или равно
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            &lt;=
+                                        </td>
+                                        <td>
+                                            Меньше или равно
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            =
+                                        </td>
+                                        <td>
+                                            Равно
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            &th;&gt;
+                                        </td>
+                                        <td>
+                                            Не равно
+                                        </td>
+                                    </tr>                                    
+                                </tbody>
+                            </table>
+                            Логические операторы
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Оператор</th>
+                                        <th>Описание</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            ALL
+                                        </td>
+                                        <td>
+                                            TRUE если все значения подпадают под условие
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            ANY
+                                        </td>
+                                        <td>
+                                            TRUE если хотя бы одно значение подпадает под условие
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            AND
+                                        </td>
+                                        <td>
+                                            TRUE если оба операнда TRUE
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            BETWEEN
+                                        </td>
+                                        <td>
+                                            TRUE если операнд находится между заданными значениями
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            EXISTS
+                                        </td>
+                                        <td>
+                                            TRUE если подзапрос выдает хотя бы одно значение
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            IN
+                                        </td>
+                                        <td>
+                                            TRUE если значение операнда находится в списке 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            LIKE
+                                        </td>
+                                        <td>
+                                            TRUE если значение операнда совпадает с патерном 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            NOT
+                                        </td>
+                                        <td>
+                                            TRUE если выражение FALSE
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            OR
+                                        </td>
+                                        <td>
+                                            TRUE если хотя бы одно из условий разделенное OR TRUE
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            Битовые операторы
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Оператор</th>
+                                        <th>Описание</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            &
+                                        </td>
+                                        <td>
+                                            Побитовое И
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            |
+                                        </td>
+                                        <td>
+                                            Побитовое ИЛИ
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            ^
+                                        </td>
+                                        <td>
+                                            Побитовое исключающее ИЛИ
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     <div class="item"><a href="distinct.html">Выборка уникальных значений SELECT DISTINCT</a></div>
                     <div class="item"><a href="order.html">Сортировка или ORDER BY</a></div>
                     <div class="item"><a href="min.html" onclick="showPage('min')">Встроенные функции</a></div>
