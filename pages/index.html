@@ -44,7 +44,7 @@
 
             function onSearch() {
                 window.event.preventDefault();
-                var query = $("#query").val();
+                var query = $("#query").val().toUpperCase();
                 if (query == "") return;
 
                 var results = [];
@@ -52,7 +52,7 @@
                 var len = $(".page").length;
                 var count = 1;
                 $(".page").each(function(i, obj) {
-                    var text = $(obj).text();
+                    var text = $(obj).text().toUpperCase();
                     var id = $(obj).attr('id')
                     if (text.includes(query)) {
                         results.push(obj);
@@ -63,7 +63,7 @@
                         html = "";
                         var j = 0;
                         results.forEach(function(obj) {
-                            var text = $(obj).text();
+                            var text = $(obj).text().toUpperCase();
                             var i = text.indexOf(query)
                             var id = ids[j];
                             j += 1;
@@ -95,13 +95,13 @@
 
             </div>
             <div class="content-page" id="search-results">
-                <div class="close-btn"><a href="close.html" onclick="hideSearch()">Закрыть</a></div>
+                <div class="close-btn"><a href="close.html" onclick="hideSearch()"><img src="img/arrow_back.png" width="80px"/></a></div>
             </div>
             <div class="row">
                 <div class="column">
                     <div class="item"><a href="about.html" onclick="showPage('about')">Что такое SQL и SQL база данных?</a></div>
                     <div class="page" id="about">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Реляционные базы данных представляют собой набор таблиц, 
                             которые могут быть связаны между собой по средствам первичных 
@@ -242,7 +242,7 @@ INSERT INTO OrderedProducts(ProductId, OrderId) VALUES((SELECT Id FROM Products 
                     </div>
                     <div class="item"><a href="select.html" onclick="showPage('select')">Выборка</a></div>
                     <div class="page" id="select">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Операция SELECT используется для выборки данных из базы данных. Это одна из самых распростаненных
                             операций, используемых в SQL. Например, используя наш пример базы данных, мы можем выбрать все строки 
@@ -277,7 +277,7 @@ SELECT ProductName, Price FROM Products;
                         <a href="where.html" onclick="showPage('where')">Выборка с фильтрами</a>
                     </div>
                     <div class="page" id="where">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Гибкость языка SQL заключаеться в том, что можно выбирать только нужные данные, а не все.
                             Для этих целей существует колючевое слово WHERE. Например, если мы хотим выбрать все товары,
@@ -306,7 +306,7 @@ SELECT ProductName, Price FROM Products WHERE Price >= 1.0 AND Price <= 5.0;
                     </div>
                     <div class="item"><a href="group.html" onclick="showPage('group')">Группировка: GROUP BY</a></div>
                     <div class="page" id="group">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Выбранные данные можно группировать. Это очень важно если, например, к сгруппированным данным 
                             необходимо применить агрегирующую функцию. Например, в нашей базе данных мы можем найти сумму
@@ -329,7 +329,7 @@ SELECT c.Name, ROUND(SUM(p.Price), 2) FROM Categories AS c INNER JOIN Products A
                     </div>
                     <div class="item"><a href="like" onclick="showPage('like')">LIKE</a></div>
                     <div class="page" id="like">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Для фильтрации колонки, содержащей строковые данные можно использовать ключевое значение 
                             LIKE. Например, для того, чтобы выбрать все продукты содержащие слово <i>машина</i> можно выполнить
@@ -415,7 +415,7 @@ SELECT p.* FROM Products p WHERE ProductName LIKE '%машина%';
                     </div>
                     <div class="item"><a href="case.html" onclick="showPage('case')">CASE</a></div>
                     <div class="page" id="case">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Выражение CASE во время отработки скипта SQL проходит по условиям и возвращает значение,
                             соответствующее первому совпавшему условию (также как и выражение IF-THEN-ELSE).
@@ -449,7 +449,7 @@ FROM Products
                     </div>
                     <div class="item"><a href="aliases.html" onclick="showPage('aliases')">Альясы</a></div>
                     <div class="page" id="aliases">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             В SQL альясы используються для того, чтобы дать таблице или колонке временное имя.
                             Альяс действует только на время выполнения запроса. И очень часто используются 
@@ -466,7 +466,7 @@ SELECT p.* FROM Products AS p;
                     </div>
                     <div class="item"><a href="update.html" onclick="showPage('update')">Обновление данных</a></div>
                     <div class="page" id="update">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Для обновления данных в таблице существует специальное ключевое слово UPDATE.
                             Также как и для SELECT операции, в UPDATE можно использовать WHERE для выборки только тех строк,
@@ -492,7 +492,7 @@ UPDATE Products SET Price = 1.5 WHERE Products.ProductCategoryId IN
                     </div>
                     <div class="item"><a href="views.html" onclick="showPage('views')">Представления</a></div>
                     <div class="page" id="views">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             В SQL, представления являются особым объектом, который содержит данные, полученные запросом SELECT из обычных таблиц. 
                             Это виртуальная таблица, к которой можно обратиться как к обычным таблицам и получить хранимые данные. 
@@ -517,7 +517,7 @@ SELECT * FROM AllProductsWithCategories;
                 <div class="column">
                     <div class="item"><a href="major_queries.html" onclick="showPage('major_queries')">Основные типы запросов</a></div>
                     <div class="page" id="major_queries">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             В SQL существует пять основных запросов:
                             <ul>
@@ -532,7 +532,7 @@ SELECT * FROM AllProductsWithCategories;
                     </div>
                     <div class="item"><a href="top.html" onclick="showPage('top')"">Первые N или SELECT TOP</a></div>
                     <div class="page" id="top">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Иногда нужно выбрать первые N строк из результата. Для этого существует ключевое слово TOP:
                         </div>
@@ -567,7 +567,7 @@ ORDER BY Id ASC
                     </div>
                     <div class="item"><a href="and.html" onclick="showPage('and')">Логические операторы AND, OR, NOT</a></div>
                     <div class="page" id="and">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Мы уже использовали составные логические выражения при конструирование запросов 
                             к базе данных. В данном разделе рассмотрим логические операторы AND, OR, NOT.
@@ -892,7 +892,7 @@ SELECT p.ProductName FROM Products AS p
                     </div>
                     <div class="item"><a href="aggregation.html" onclick="showPage('aggregation')">Агрегирующие функции COUNT, SUM, AVG, STDEV</a></div>
                     <div class="page" id="aggregation">
-                        <div class="close-btn"><a href="#" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Агрегирующие функции применимы вместе с ключевым словом GROUP BY. Мы уже встречали ранее 
                             запросы с группировкаой. В таблице приведенной ниже мы перечисляем некоторые агрегирующие 
@@ -945,7 +945,7 @@ SELECT COUNT(Price) AS N, SUM(Price) AS Sum, AVG(Price) AS Mean, ISNULL(STDEV(Pr
                     </div>
                     <div class="item"><a href="intersect.html" onclick="showPage('intersect')">Пересечения INTERSECT</a></div>
                     <div class="page" id="intersect">
-                        <div class="close-btn"><a href="#" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             INTERSECT позволяет найти пересечение в строках двух таблиц и вернуть как 
                             результат это пересечение. Для того, чтобы INTERSECT корректно работал
@@ -971,7 +971,7 @@ SELECT ProductId FROM OrderedProducts WHERE OrderId =
                     </div>
                     <div class="item"><a href="join.html" onclick="showPage('join')">Объединения или JOIN запросы</a></div>
                     <div class="page" id="join">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             JOIN используется для объединения строк из двух и более таблиц, основываясь на связанных колонках
                             в этих таблицах. Так, например, в нашем примере таблица Products и OrderedProducts имеют связь по колонке
@@ -1015,7 +1015,7 @@ SELECT * FROM OrderedProducts op
                             <img alt="INNER JOIN" src="img/right_join_result.png" class="img" style="width: 30%"/>
                         </div>
                         <div class="paragraph">
-                            LEFT JOIN похож RIGHT JOIN - он возвратит все строки из правой и левой таблицы,
+                            LEFT JOIN похож на RIGHT JOIN - он возвратит все строки из правой и левой таблицы,
                             для которых есть совпадение по полю, плюс все оставшиеся строки из левой таблицы
                             и NULL значения для правой таблицы (для которых не было совпадений). На диаграмме 
                             Венна эта операция выглядит следующим образом:
@@ -1029,7 +1029,7 @@ SELECT * FROM OrderedProducts op
                     </div>
                     <div class="item"><a href="any.html" onclick="showPage('any')">ANY</a></div>
                     <div class="page" id="any">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             ANY возврашает True если логическое выражение выполняется хотя бы для одного значения:                            
                             <pre>
@@ -1053,7 +1053,7 @@ SELECT * FROM Products p
                     </div>
                     <div class="item"><a href="exists.html" onclick="showPage('exists')">EXISTS</a></div>
                     <div class="page" id="exists">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Возврашает True если результат выборки содержит хотя бы одну строку:
                             <pre>
@@ -1068,11 +1068,11 @@ ELSE
                     </div>
                     <div class="item"><a href="delete.html" onclick="showPage('delete')">Удаление данных </a></div>
                     <div class="page" id="delete">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Для удаления данных из таблице существует специальное ключевое слово DELETE.
                             Также как и для SELECT и UPDATE операции, в DELETE можно использовать WHERE для удаления только тех строк,
-                            которые представляют интерес. Приведем пример самого простого выражения для обновления:
+                            которые представляют интерес. Приведем пример самого простого выражения для удаления данных из таблицы:
                         </div>
                         <div class="paragraph">
                             <pre>
@@ -1103,7 +1103,7 @@ DELETE FROM  Products WHERE Products.ProductCategoryId IN
                     </div>
                     <div class="item"><a href="comments.html" onclick="showPage('comments')">Комментарии</a></div>
                     <div class="page" id="comments">
-                        <div class="close-btn"><a href="close.html" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Когда запрос очень громоздкий рекомендуется к коду добавлять комментарии. В SQL 
                             коментарии могут быть однострочнимы и многострочными:
@@ -1118,7 +1118,8 @@ SELECT * FROM Products -- WHERE Id = 2
                             А это уже многострочный комментарий:
                             <pre>
                                 <code>
-/* Данный запрос выдаст только 
+/* 
+Данный запрос выдаст только 
 один продукт
 */ 
 SELECT * FROM Products WHERE Id = 2
@@ -1133,7 +1134,7 @@ SELECT * FROM Products WHERE Id = 2
                     <div class="item"><a href="order.html">Сортировка или ORDER BY</a></div>
                     <div class="item"><a href="min.html" onclick="showPage('min')">Встроенные функции</a></div>
                     <div class="page" id="min">
-                        <div class="close-btn"><a href="#" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Ниже мы приводим функции, которые часто встречаются на практике. Полный список функций
                             можно посмотреть <a href="https://www.w3schools.com/sql/sql_ref_sqlserver.asp">здесь</a>
@@ -1195,7 +1196,7 @@ SELECT * FROM Products WHERE Id = 2
                     </div>
                     <div class="item"><a href="in.html" onclick="showPage('in')">IN и BETWEEN</a></div>
                     <div class="page" id="in">
-                        <div class="close-btn"><a href="#" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             IN возврашает True если значение присутствует в наборе:
                             <pre>
@@ -1219,7 +1220,7 @@ SELECT * FROM Products p
                     </div>
                     <div class="item"><a href="union.html" onclick="showPage('union')">Объединение UNION</a></div>
                     <div class="page" id="union">
-                        <div class="close-btn"><a href="#" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             UNION позволяет объединенить строки из двух таблиц и более таблиц, и вернуть  
                             результат этого объединения как одну таблицу. Для того, чтобы UNION корректно работал
@@ -1236,10 +1237,10 @@ SELECT CONCAT(FName, ' ', LName) AS Name FROM Customers WHERE LName LIKE 'Анд
                         </div>
                     </div>
                     <!-- div class="item"><a href="null.html">NULL значения</a></div -->
-                    <div class="item"><as href="insert.html">Вставки INSERT</a></div>
+                    <div class="item"><a href="insert.html">Вставки INSERT</a></div>
                     <div class="item"><a href="sp.html" onclick="showPage('sp')">Хранимые процедуры</a></div>
                     <div class="page" id="sp">
-                        <div class="close-btn"><a href="#" onclick="hidePage()">Закрыть</a></div>
+                        <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Храни́мая процедура - объект базы данных, представляющий собой набор SQL-инструкций, который компилируется один 
                             раз и хранится на сервере. Хранимые процедуры очень похожи на обыкновенные процедуры языков высокого уровня, у 
