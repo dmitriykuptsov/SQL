@@ -1383,6 +1383,7 @@ SELECT DISTINCT SUBSTRING (Email, CHARINDEX( '@', Email) + 1, LEN(Email)) AS Dom
                     </div>
                     <div class="item"><a href="order.html" onclick="showPage('order')">Сортировка или ORDER BY</a></div>
                     <div class="page" id="order">
+                        <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Отсортировать колонки (в определенном порядке) можно с использованием ключевого слова ORDER BY. Например,
                             для сортировки по возрастанию можно указать ORDER BY column ASC. Для сортировки по убывнию вместо ASC нужно
