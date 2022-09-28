@@ -1390,7 +1390,7 @@ SELECT DISTINCT SUBSTRING (Email, CHARINDEX( '@', Email) + 1, LEN(Email)) AS Dom
                             использовать DESC.
                             <pre>
                                 <code>
-SELECT * FROM Orders GROUP BY OrderDate DESC;
+SELECT * FROM Orders ORDER BY OrderDate DESC;
                                 </code>
                             </pre>
                         </div>
