@@ -1355,8 +1355,44 @@ SELECT * FROM Products WHERE Id = 2
                             </table>
                         </div>
                     </div>
-                    <div class="item"><a href="distinct.html">Выборка уникальных значений SELECT DISTINCT</a></div>
-                    <div class="item"><a href="order.html">Сортировка или ORDER BY</a></div>
+                    <div class="item"><a href="distinct.html" onclick="showPage('distinct')">Выборка уникальных значений SELECT DISTINCT</a></div>
+                    <div class="page" id="distinct">
+                        <div class="paragraph">
+                            Если требуется выбрать уникальные значения, то можно использовать ключевое слово DISTINCT. Например, в следующем 
+                            куске кода мы выбираем уникальные продукты, которые были когда либо заказани любым покупателем: 
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT DISTINCT ProductId FROM OrderedProducts;
+                                </code>
+                            </pre>
+                        </div>
+                        <div class="paragraph">
+                            Или же например начальство попросило выбрать уникальные домены, на которых были зарегестрированны почтовые ящики
+                            покупателей:
+                        </div>
+                        <div class="paragraph">
+                            <pre>
+                                <code>
+SELECT DISTINCT SUBSTRING (Email, CHARINDEX( '@', Email) + 1, LEN(Email)) AS Domain FROM Customers;
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
+                    <div class="item"><a href="order.html" onclick="showPage('order')">Сортировка или ORDER BY</a></div>
+                    <div class="page" id="order">
+                        <div class="paragraph">
+                            Отсортировать колонки (в определенном порядке) можно с использованием ключевого слова ORDER BY. Например,
+                            для сортировки по возрастанию можно указать ORDER BY column ASC. Для сортировки по убывнию вместо ASC нужно
+                            использовать DESC.
+                            <pre>
+                                <code>
+SELECT * FROM Orders GROUP BY OrderDate DESC;
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
                     <div class="item"><a href="min.html" onclick="showPage('min')">Встроенные функции</a></div>
                     <div class="page" id="min">
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
