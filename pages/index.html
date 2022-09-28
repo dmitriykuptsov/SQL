@@ -74,9 +74,10 @@
                     }
                     count += 1;
                 });
-                
-                $("#search-results").html(html);
-                $("#search-results").show();
+                if (results.length > 0) {
+                    $("#search-results").html(html);
+                    $("#search-results").show();
+                }
             }
         </script>
     </head>
