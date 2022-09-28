@@ -149,7 +149,7 @@
                                     </tr>
                                     <tr>
                                         <td>IMAGE</td>
-                                        <td>Бинырный файл размером до 2GB</td>
+                                        <td>Бинарный файл размером до 2GB</td>
                                     </tr>
                                     <tr>
                                         <td>DATETIME</td>
@@ -480,7 +480,7 @@ UPDATE Products SET Price = 1.5 WHERE Products.Id = 1;
                             </pre>
                         </div>
                         <div class="paragraph">
-                            Но также как и в SELECT в выражение WHERE можно использовать подзапросы,
+                            Но также как и в SELECT выражение WHERE можно использовать подзапросы,
                             например:
                             <pre>
                                 <code>
@@ -1360,7 +1360,7 @@ SELECT * FROM Products WHERE Id = 2
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Если требуется выбрать уникальные значения, то можно использовать ключевое слово DISTINCT. Например, в следующем 
-                            куске кода мы выбираем уникальные продукты, которые были когда либо заказани любым покупателем: 
+                            куске кода мы выбираем уникальные продукты, которые были когда либо заказаны любым покупателем: 
                         </div>
                         <div class="paragraph">
                             <pre>
@@ -1505,7 +1505,7 @@ SELECT CONCAT(FName, ' ', LName) AS Name FROM Customers WHERE LName LIKE 'Анд
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
                             Ключевое слово INSERT используется для вставки строк в таблицу. Для того что бы вставить значение в
-                            таблицу необходимо указать имена колонок, для которых будем делать вставки и сами значение. Например,
+                            таблицу необходимо указать имена колонок, для которых будем делать вставки и сами значения. Например:
                             <pre>
                                 <code>
 INSERT INTO Customers(FName, LName, Email, RegisteredAt) VALUES('Someone', 'Unknown', 'someone@yahoo.com')
