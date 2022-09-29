@@ -21,10 +21,11 @@
         <meta name="robots" content="index, follow" />
         <meta name="keywords" content="SQL, queries" />
         <script type="text/javascript">
-            function showPage(page) {
+            function showPage(page, title) {
                 window.event.preventDefault();
                 var html = $("#" + page).html();
-                $("#content-page").html(html);
+                $("#content-page > .title").html(title);
+                $("#content-page > .content").html(html);
                 $("#content-page").show();
                 return false;
             }
@@ -102,14 +103,18 @@
                 </div>
             </div>
             <div class="content-page" id="content-page">
+                <div class="title">
+                </div>
+                <div class="content">
 
+                </div>
             </div>
             <div class="content-page" id="search-results">
                 <div class="close-btn"><a href="close.html" onclick="hideSearch()"><img src="img/arrow_back.png" width="80px"/></a></div>
             </div>
             <div class="row">
                 <div class="column">
-                    <div class="item"><a href="about.html" onclick="showPage('about')">Что такое SQL и SQL база данных?</a></div>
+                    <div class="item"><a href="#" onclick="showPage('about', 'Что такое SQL и SQL база данных?')">Что такое SQL и SQL база данных?</a></div>
                     <div class="page" id="about">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -250,7 +255,7 @@ INSERT INTO OrderedProducts(ProductId, OrderId) VALUES((SELECT Id FROM Products 
                             <img alt="DB Example" class="img" src="img/db_diagram.png" />
                         </div>
                     </div>
-                    <div class="item"><a href="select.html" onclick="showPage('select')">Выборка</a></div>
+                    <div class="item"><a href="select.html" onclick="showPage('select', 'Выборка или SELECT')">Выборка</a></div>
                     <div class="page" id="select">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -284,7 +289,7 @@ SELECT ProductName, Price FROM Products;
                         </div>
                     </div>
                     <div class="item">
-                        <a href="where.html" onclick="showPage('where')">Выборка с фильтрами</a>
+                        <a href="where.html" onclick="showPage('where', 'Выборка с условием или WHERE')">Выборка с фильтрами</a>
                     </div>
                     <div class="page" id="where">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
@@ -314,7 +319,7 @@ SELECT ProductName, Price FROM Products WHERE Price >= 1.0 AND Price <= 5.0;
                             </pre>
                         </div>                        
                     </div>
-                    <div class="item"><a href="group.html" onclick="showPage('group')">Группировка: GROUP BY</a></div>
+                    <div class="item"><a href="group.html" onclick="showPage('group', 'Группировка или GROUP BY')">Группировка: GROUP BY</a></div>
                     <div class="page" id="group">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -337,7 +342,7 @@ SELECT c.Name, ROUND(SUM(p.Price), 2) FROM Categories AS c INNER JOIN Products A
                             <img alt="GROUP BY result" class="img" src="img/group_by_result.png" />
                         </div>
                     </div>
-                    <div class="item"><a href="like" onclick="showPage('like')">LIKE</a></div>
+                    <div class="item"><a href="like" onclick="showPage('like', 'LIKE')">LIKE</a></div>
                     <div class="page" id="like">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -423,7 +428,7 @@ SELECT p.* FROM Products p WHERE ProductName LIKE '%машина%';
                             </table>
                         </div>
                     </div>
-                    <div class="item"><a href="case.html" onclick="showPage('case')">CASE</a></div>
+                    <div class="item"><a href="case.html" onclick="showPage('case', 'CASE')">CASE</a></div>
                     <div class="page" id="case">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -457,7 +462,7 @@ FROM Products
                             <img alt="CASE statement" class="img" src="img/case.png"/>
                         </div>
                     </div>
-                    <div class="item"><a href="aliases.html" onclick="showPage('aliases')">Альясы</a></div>
+                    <div class="item"><a href="aliases.html" onclick="showPage('aliases', 'Альясы')">Альясы</a></div>
                     <div class="page" id="aliases">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -474,7 +479,7 @@ SELECT p.* FROM Products AS p;
                             </pre>
                         </div>
                     </div>
-                    <div class="item"><a href="update.html" onclick="showPage('update')">Обновление данных</a></div>
+                    <div class="item"><a href="update.html" onclick="showPage('update', 'Обновление данных')">Обновление данных</a></div>
                     <div class="page" id="update">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -500,7 +505,7 @@ UPDATE Products SET Price = 1.5 WHERE Products.ProductCategoryId IN
                             </pre>
                         </div>
                     </div>
-                    <div class="item"><a href="views.html" onclick="showPage('views')">Представления</a></div>
+                    <div class="item"><a href="views.html" onclick="showPage('views', 'Представления')">Представления</a></div>
                     <div class="page" id="views">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -525,7 +530,7 @@ SELECT * FROM AllProductsWithCategories;
                     </div>
                 </div>
                 <div class="column">
-                    <div class="item"><a href="major_queries.html" onclick="showPage('major_queries')">Основные типы запросов</a></div>
+                    <div class="item"><a href="major_queries.html" onclick="showPage('major_queries', 'Основные типы запросов')">Основные типы запросов</a></div>
                     <div class="page" id="major_queries">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -540,7 +545,7 @@ SELECT * FROM AllProductsWithCategories;
                             Мы рассмотрим только SELECT, UPDATE и DELETE команды.
                         </div>
                     </div>
-                    <div class="item"><a href="top.html" onclick="showPage('top')"">Первые N или SELECT TOP</a></div>
+                    <div class="item"><a href="top.html" onclick="showPage('top', 'Первые N или SELECT TOP')"">Первые N или SELECT TOP</a></div>
                     <div class="page" id="top">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -575,7 +580,7 @@ ORDER BY Id ASC
                             <img alt="OFFSET and FETCH NEXT result" class="img" src="img/fetch_next.png" />
                         </div>
                     </div>
-                    <div class="item"><a href="and.html" onclick="showPage('and')">Логические операторы AND, OR, NOT</a></div>
+                    <div class="item"><a href="and.html" onclick="showPage('and', 'Логические операторы AND, OR, NOT')">Логические операторы AND, OR, NOT</a></div>
                     <div class="page" id="and">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -900,7 +905,7 @@ SELECT p.ProductName FROM Products AS p
                             <img alt="Logical expressions result" src="img/logical.png" class="img"/>
                         </div>
                     </div>
-                    <div class="item"><a href="aggregation.html" onclick="showPage('aggregation')">Агрегирующие функции COUNT, SUM, AVG, STDEV</a></div>
+                    <div class="item"><a href="aggregation.html" onclick="showPage('aggregation', 'Агрегирующие функции COUNT, SUM, AVG, STDEV')">Агрегирующие функции COUNT, SUM, AVG, STDEV</a></div>
                     <div class="page" id="aggregation">
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -953,7 +958,7 @@ SELECT COUNT(Price) AS N, SUM(Price) AS Sum, AVG(Price) AS Mean, ISNULL(STDEV(Pr
                             <img class="img" alg="Aggregation functions" src="img/aggregation_functions.png"/>
                         </div>
                     </div>
-                    <div class="item"><a href="intersect.html" onclick="showPage('intersect')">Пересечения INTERSECT</a></div>
+                    <div class="item"><a href="intersect.html" onclick="showPage('intersect', 'Пересечения INTERSECT')">Пересечения INTERSECT</a></div>
                     <div class="page" id="intersect">
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -979,7 +984,7 @@ SELECT ProductId FROM OrderedProducts WHERE OrderId =
                             </pre>
                         </div>
                     </div>
-                    <div class="item"><a href="join.html" onclick="showPage('join')">Объединения или JOIN запросы</a></div>
+                    <div class="item"><a href="join.html" onclick="showPage('join', 'Объединения или JOIN запросы')">Объединения или JOIN запросы</a></div>
                     <div class="page" id="join">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -1037,7 +1042,7 @@ SELECT * FROM OrderedProducts op
                             <img alt="INNER JOIN" src="img/img_fulljoin.gif" class="img" style="width: 20%"/>
                         </div>
                     </div>
-                    <div class="item"><a href="any.html" onclick="showPage('any')">ANY</a></div>
+                    <div class="item"><a href="any.html" onclick="showPage('any', 'ANY')">ANY</a></div>
                     <div class="page" id="any">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -1061,7 +1066,7 @@ SELECT * FROM Products p
                             <img class="img" alt="ALL" src="img/all.png"/>
                         </div>
                     </div>
-                    <div class="item"><a href="exists.html" onclick="showPage('exists')">EXISTS</a></div>
+                    <div class="item"><a href="exists.html" onclick="showPage('exists', 'EXISTS')">EXISTS</a></div>
                     <div class="page" id="exists">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -1076,7 +1081,7 @@ ELSE
                             </pre>
                         </div>
                     </div>
-                    <div class="item"><a href="delete.html" onclick="showPage('delete')">Удаление данных </a></div>
+                    <div class="item"><a href="delete.html" onclick="showPage('delete', 'Удаление данных')">Удаление данных</a></div>
                     <div class="page" id="delete">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -1111,7 +1116,7 @@ DELETE FROM  Products WHERE Products.ProductCategoryId IN
                             </pre>
                         </div>
                     </div>
-                    <div class="item"><a href="comments.html" onclick="showPage('comments')">Комментарии</a></div>
+                    <div class="item"><a href="comments.html" onclick="showPage('comments', 'Комментарии')">Комментарии</a></div>
                     <div class="page" id="comments">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -1139,7 +1144,7 @@ SELECT * FROM Products WHERE Id = 2
                     </div>
                 </div>
                 <div class="column">
-                    <div class="item"><a href="operators.html" onclick="showPage('operators')">Операторы</a></div>
+                    <div class="item"><a href="operators.html" onclick="showPage('operators', 'Операторы')">Операторы</a></div>
                     <div class="page" id="operators">
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -1365,7 +1370,7 @@ SELECT * FROM Products WHERE Id = 2
                             </table>
                         </div>
                     </div>
-                    <div class="item"><a href="distinct.html" onclick="showPage('distinct')">Выборка уникальных значений SELECT DISTINCT</a></div>
+                    <div class="item"><a href="distinct.html" onclick="showPage('distinct', 'Выборка уникальных значений SELECT DISTINCT')">Выборка уникальных значений SELECT DISTINCT</a></div>
                     <div class="page" id="distinct">
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -1386,12 +1391,12 @@ SELECT DISTINCT ProductId FROM OrderedProducts;
                         <div class="paragraph">
                             <pre>
                                 <code>
-SELECT DISTINCT SUBSTRING (Email, CHARINDEX( '@', Email) + 1, LEN(Email)) AS Domain FROM Customers;
+SELECT DISTINCT SUBSTRING(Email, CHARINDEX( '@', Email) + 1, LEN(Email)) AS Domain FROM Customers;
                                 </code>
                             </pre>
                         </div>
                     </div>
-                    <div class="item"><a href="order.html" onclick="showPage('order')">Сортировка или ORDER BY</a></div>
+                    <div class="item"><a href="order.html" onclick="showPage('order', 'Сортировка или ORDER BY')">Сортировка или ORDER BY</a></div>
                     <div class="page" id="order">
                         <div class="close-btn"><a href="close.html" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -1405,7 +1410,7 @@ SELECT * FROM Orders ORDER BY OrderDate DESC;
                             </pre>
                         </div>
                     </div>
-                    <div class="item"><a href="min.html" onclick="showPage('min')">Встроенные функции</a></div>
+                    <div class="item"><a href="min.html" onclick="showPage('min', 'Встроенные функции')">Встроенные функции</a></div>
                     <div class="page" id="min">
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -1467,7 +1472,7 @@ SELECT * FROM Orders ORDER BY OrderDate DESC;
                             </table>
                         </div>
                     </div>
-                    <div class="item"><a href="in.html" onclick="showPage('in')">IN и BETWEEN</a></div>
+                    <div class="item"><a href="in.html" onclick="showPage('in', 'IN и BETWEEN')">IN и BETWEEN</a></div>
                     <div class="page" id="in">
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -1491,7 +1496,7 @@ SELECT * FROM Products p
                             <img class="img" src="img/between.png" alt="IN" />
                         </div>
                     </div>
-                    <div class="item"><a href="union.html" onclick="showPage('union')">Объединение UNION</a></div>
+                    <div class="item"><a href="union.html" onclick="showPage('union', 'Объединение UNION')">Объединение UNION</a></div>
                     <div class="page" id="union">
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -1510,7 +1515,7 @@ SELECT CONCAT(FName, ' ', LName) AS Name FROM Customers WHERE LName LIKE 'Анд
                         </div>
                     </div>
                     <!-- div class="item"><a href="null.html">NULL значения</a></div -->
-                    <div class="item"><a href="insert.html" onclick="showPage('insert')">Вставки INSERT</a></div>
+                    <div class="item"><a href="insert.html" onclick="showPage('insert', 'Вставки INSERT')">Вставки INSERT</a></div>
                     <div class="page" id="insert">
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
@@ -1523,7 +1528,7 @@ INSERT INTO Customers(FName, LName, Email, RegisteredAt) VALUES('Someone', 'Unkn
                             </pre> 
                         </div>
                     </div>
-                    <div class="item"><a href="sp.html" onclick="showPage('sp')">Хранимые процедуры</a></div>
+                    <div class="item"><a href="sp.html" onclick="showPage('sp', 'Хранимые процедуры')">Хранимые процедуры</a></div>
                     <div class="page" id="sp">
                         <div class="close-btn"><a href="#" onclick="hidePage()"><img src="img/arrow_back.png" width="80px"/></a></div>
                         <div class="paragraph">
