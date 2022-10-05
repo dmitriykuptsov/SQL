@@ -1,5 +1,5 @@
-CREATE DATABASE DrillHoles;
-GO
+--CREATE DATABASE DrillHoles;
+--GO
 USE DrillHoles;
 GO
 CREATE TABLE DrillHole (
@@ -76,6 +76,14 @@ INSERT INTO Sample(DrillHoleId, Name, FromDepth, ToDepth, CuPpm, AuPpm, AgPpm) V
 INSERT INTO Sample(DrillHoleId, Name, FromDepth, ToDepth, CuPpm, AuPpm, AgPpm) VALUES((SELECT Id FROM DrillHole WHERE Name = 'C-02'), 'Обр-7-С-02', 44, 46, 1.9, 0.5, 0.1);
 
 INSERT INTO Lithology(DrillHoleId, LitTypeId, FromDepth, ToDepth) VALUES((SELECT Id FROM DrillHole WHERE Name = N'C-01'), 
-	(SELECT Id FROM Lithology_Types WHERE Description LIKE N'Известняк'), 30, 36);
+	(SELECT Id FROM Lithology_Types WHERE Description LIKE N'Известняк'), 30, 32);
+INSERT INTO Lithology(DrillHoleId, LitTypeId, FromDepth, ToDepth) VALUES((SELECT Id FROM DrillHole WHERE Name = N'C-01'), 
+	(SELECT Id FROM Lithology_Types WHERE Description LIKE N'Известняк'), 32, 34);
+INSERT INTO Lithology(DrillHoleId, LitTypeId, FromDepth, ToDepth) VALUES((SELECT Id FROM DrillHole WHERE Name = N'C-01'), 
+	(SELECT Id FROM Lithology_Types WHERE Description LIKE N'Известняк'), 34, 36);
 INSERT INTO Lithology(DrillHoleId, LitTypeId, FromDepth, ToDepth) VALUES((SELECT Id FROM DrillHole WHERE Name = N'C-02'), 
-	(SELECT Id FROM Lithology_Types WHERE Description LIKE N'Песчаник'), 30, 36);
+	(SELECT Id FROM Lithology_Types WHERE Description LIKE N'Песчаник'), 32, 34);
+INSERT INTO Lithology(DrillHoleId, LitTypeId, FromDepth, ToDepth) VALUES((SELECT Id FROM DrillHole WHERE Name = N'C-02'), 
+	(SELECT Id FROM Lithology_Types WHERE Description LIKE N'Песчаник'), 34, 36);	
+INSERT INTO Lithology(DrillHoleId, LitTypeId, FromDepth, ToDepth) VALUES((SELECT Id FROM DrillHole WHERE Name = N'C-02'), 
+	(SELECT Id FROM Lithology_Types WHERE Description LIKE N'Песчаник'), 36, 38);
