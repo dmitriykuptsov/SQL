@@ -1,6 +1,4 @@
---CREATE DATABASE DrillHoles;
---GO
-USE DrillHoles;
+USE geology;
 GO
 CREATE TABLE DrillHole (
 	Id INT PRIMARY KEY IDENTITY(1, 1),
